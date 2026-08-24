@@ -1,8 +1,4 @@
-import {
-	App,
-	MarkdownPostProcessorContext,
-	TFile,
-} from "obsidian";
+import { App, MarkdownPostProcessorContext, TFile } from "obsidian";
 
 import { adjustColorLightness, getThemeAccentColor } from "./colors";
 import { getDefiningTag } from "./tags";
@@ -28,29 +24,22 @@ const THEME_PATTERN = /\[theme(?:\/(\d+(?:\.\d+)?))?\]/g;
  * Code and preformatted text are deliberately ignored.
  */
 export function processThemePlaceholders(
-	app: App,
-	element: HTMLElement,
-	context: MarkdownPostProcessorContext,
-	tagColors: Record<string, string>,
+  app: App,
+  element: HTMLElement,
+  context: MarkdownPostProcessorContext,
+  tagColors: Record<string, string>,
 ): void {
-	const file = app.vault.getAbstractFileByPath(
-		context.sourcePath,
-	);
+  const file = app.vault.getAbstractFileByPath(context.sourcePath);
 
-	if (!(file instanceof TFile)) {
-		return;
-	}
+  if (!(file instanceof TFile)) {
+    return;
+  }
 
-	const themeColor = getFileThemeColor(
-		app,
-		file,
-		tagColors,
-	);
+  const themeColor = getFileThemeColor(app, file, tagColors);
 
-	replaceThemePlaceholdersInText(
-		element,
-		themeColor,
-	);
+  replaceThemePlaceholdersInText(element, themeColor);
+
+  replaceThemePlaceholdersInAttributes(element, themeColor);
 }
 
 /**
@@ -60,21 +49,17 @@ export function processThemePlaceholders(
  * Otherwise Obsidian's current accent color is used.
  */
 function getFileThemeColor(
-	app: App,
-	file: TFile,
-	tagColors: Record<string, string>,
+  app: App,
+  file: TFile,
+  tagColors: Record<string, string>,
 ): string {
-	const definingTag = getDefiningTag(
-		app,
-		file,
-		tagColors,
-	);
+  const definingTag = getDefiningTag(app, file, tagColors);
 
-	if (definingTag !== undefined && tagColors[definingTag]) {
-		return tagColors[definingTag];
-	}
+  if (definingTag !== undefined && tagColors[definingTag]) {
+    return tagColors[definingTag];
+  }
 
-	return getThemeAccentColor();
+  return getThemeAccentColor();
 }
 
 /**
@@ -83,82 +68,98 @@ function getFileThemeColor(
  * <code> and <pre> elements are skipped.
  */
 function replaceThemePlaceholdersInText(
-	root: HTMLElement,
-	themeColor: string,
+  root: HTMLElement,
+  themeColor: string,
 ): void {
-	const walker = document.createTreeWalker(
-		root,
-		NodeFilter.SHOW_TEXT,
-	);
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
 
-	const textNodes: Text[] = [];
+  const textNodes: Text[] = [];
 
-	let currentNode = walker.nextNode();
+  let currentNode = walker.nextNode();
 
-	while (currentNode) {
-		if (
-			currentNode instanceof Text &&
-			shouldProcessTextNode(currentNode)
-		) {
-			textNodes.push(currentNode);
-		}
+  while (currentNode) {
+    if (currentNode.instanceOf(Text) && shouldProcessTextNode(currentNode)) {
+      textNodes.push(currentNode);
+    }
 
-		currentNode = walker.nextNode();
-	}
+    currentNode = walker.nextNode();
+  }
 
-	for (const textNode of textNodes) {
-		const originalText = textNode.nodeValue;
+  for (const textNode of textNodes) {
+    const originalText = textNode.nodeValue;
 
-		if (!originalText) {
-			continue;
-		}
+    if (!originalText) {
+      continue;
+    }
 
-		textNode.nodeValue = replaceThemePlaceholders(
-			originalText,
-			themeColor,
-		);
-	}
+    textNode.nodeValue = replaceThemePlaceholders(originalText, themeColor);
+  }
 }
 
 /**
  * Returns false for text inside literal code.
  */
-function shouldProcessTextNode(
-	node: Text,
-): boolean {
-	const parent = node.parentElement;
+function shouldProcessTextNode(node: Text): boolean {
+  const parent = node.parentElement;
 
-	if (!parent) {
-		return false;
-	}
+  if (!parent) {
+    return false;
+  }
 
-	if (parent.closest("code, pre")) {
-		return false;
-	}
+  if (parent.closest("code, pre")) {
+    return false;
+  }
 
-	return true;
+  return true;
 }
 
 /**
  * Replaces all theme placeholders inside a string.
  */
-function replaceThemePlaceholders(
-	text: string,
-	themeColor: string,
-): string {
-	return text.replace(
-		THEME_PATTERN,
-		(_match, factorText: string | undefined) => {
-			if (factorText === undefined) {
-				return themeColor;
-			}
+function replaceThemePlaceholders(text: string, themeColor: string): string {
+  return text.replace(
+    THEME_PATTERN,
+    (_match, factorText: string | undefined) => {
+      if (factorText === undefined) {
+        return themeColor;
+      }
 
-			const factor = Number(factorText);
+      const factor = Number(factorText);
 
-			return adjustColorLightness(
-				themeColor,
-				factor,
-			);
-		},
-	);
+      return adjustColorLightness(themeColor, factor);
+    },
+  );
+}
+
+/**
+ * Replaces theme placeholders inside HTML/SVG attribute values.
+ *
+ * Code and preformatted content are ignored.
+ */
+function replaceThemePlaceholdersInAttributes(
+  root: HTMLElement,
+  themeColor: string,
+): void {
+  const elements = [root, ...Array.from(root.querySelectorAll("*"))];
+
+  for (const element of elements) {
+    if (element.closest("code, pre")) {
+      continue;
+    }
+
+    for (const attribute of Array.from(element.attributes)) {
+      if (!attribute.value.includes("[theme")) {
+        continue;
+      }
+
+      const replacedValue = replaceThemePlaceholders(
+        attribute.value,
+        themeColor,
+      );
+
+      if (replacedValue !== attribute.value) {
+        element.setAttribute(attribute.name, replacedValue);
+      }
+    }
+  }
 }
