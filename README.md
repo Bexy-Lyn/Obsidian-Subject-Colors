@@ -15,3 +15,6 @@ Example:
 ```html
 <span style="backgroundColor:[theme/1.8],color:[theme/0.4],padding:1rem">I will appear styled in the file's theme colour!</span>
 ```
+
+## Please note
+Due to the nature of the live preview, the theme colours as of now don't show up in HTML elements until the file is opened in the reading view. 

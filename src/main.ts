@@ -1,4 +1,4 @@
-import { Notice, Plugin } from "obsidian";
+import { Notice, Plugin, MarkdownView, WorkspaceLeaf } from "obsidian";
 
 import {
   DEFAULT_SETTINGS,
@@ -45,5 +45,26 @@ export default class SubjectColorPlugin extends Plugin {
 
   async saveSettings() {
     await this.saveData(this.settings);
+
+	await this.refreshViews();
+  }
+
+  async refreshViews(): Promise<void> {
+    // Update Live Preview/editor styling.
+    refreshMarkdownViewStyles(this.app, this.settings);
+
+    // Rebuild visible Markdown views so Reading View
+    // postprocessors run again.
+    for (const leaf of this.app.workspace.getLeavesOfType("markdown")) {
+      if (!(leaf.view instanceof MarkdownView)) {
+        continue;
+      }
+
+      const rebuildableLeaf = leaf as WorkspaceLeaf & {
+        rebuildView?: () => void;
+      };
+
+      rebuildableLeaf.rebuildView?.();
+    }
   }
 }
