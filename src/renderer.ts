@@ -58,7 +58,7 @@ function getFileThemeColor(
 ): string {
   const definingTag = getDefiningTag(app, file, tagColors);
 
-  if (definingTag !== undefined && tagColors[definingTag]) {
+  if (definingTag !== undefined && tagColors[definingTag] !== undefined) {
     return tagColors[definingTag];
   }
 
@@ -104,60 +104,44 @@ function replaceThemePlaceholdersInText(
  * to a rendered Markdown section.
  */
 function applyThemeStyles(
-	element: HTMLElement,
-	themeColor: string,
-	settings: SubjectColorSettings,
+  element: HTMLElement,
+  themeColor: string,
+  settings: SubjectColorSettings,
 ): void {
-	element.style.setProperty(
-		"--subject-color",
-		themeColor,
-	);
+  element.style.setProperty("--subject-color", themeColor);
 
-	applyHeadingClasses(
-		element,
-		settings.headingColorLevels,
-		settings.headingUnderlineLevels,
-	);
+  applyHeadingClasses(
+    element,
+    settings.headingColorLevels,
+    settings.headingUnderlineLevels,
+  );
 
-	element.toggleClass(
-		"subject-themed-dividers",
-		settings.themeDividers,
-	);
+  element.toggleClass("subject-themed-dividers", settings.themeDividers);
 
-	element.toggleClass(
-		"subject-themed-callouts",
-		settings.themeStandardCallouts,
-	);
+  element.toggleClass(
+    "subject-themed-callouts",
+    settings.themeStandardCallouts,
+  );
 }
 
 /**
  * Adds classes for heading color and underline settings.
  */
 function applyHeadingClasses(
-	element: HTMLElement,
-	colorLevels: HeadingLevel[],
-	underlineLevels: HeadingLevel[],
+  element: HTMLElement,
+  colorLevels: HeadingLevel[],
+  underlineLevels: HeadingLevel[],
 ): void {
-	const levels: HeadingLevel[] = [
-		1,
-		2,
-		3,
-		4,
-		5,
-		6,
-	];
+  const levels: HeadingLevel[] = [1, 2, 3, 4, 5, 6];
 
-	for (const level of levels) {
-		element.toggleClass(
-			`subject-color-h${level}`,
-			colorLevels.includes(level),
-		);
+  for (const level of levels) {
+    element.toggleClass(`subject-color-h${level}`, colorLevels.includes(level));
 
-		element.toggleClass(
-			`subject-underline-h${level}`,
-			underlineLevels.includes(level),
-		);
-	}
+    element.toggleClass(
+      `subject-underline-h${level}`,
+      underlineLevels.includes(level),
+    );
+  }
 }
 
 /**
@@ -204,7 +188,7 @@ function replaceThemePlaceholdersInAttributes(
   root: HTMLElement,
   themeColor: string,
 ): void {
-  const elements = [root, ...Array.from(root.querySelectorAll("*"))];
+  const elements: Element[] = [root, ...Array.from(root.querySelectorAll("*"))];
 
   for (const element of elements) {
     if (element.closest("code, pre")) {
