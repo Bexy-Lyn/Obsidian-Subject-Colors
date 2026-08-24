@@ -6,32 +6,36 @@
  *   --subject-color
  */
 
-
 /* -----------------------------------------
  * Heading colors
  * ----------------------------------------- */
 
-.subject-color-h1 h1 {
+.subject-color-h1 h1,
+.subject-color-h1 .cm-header-1 {
+  color: var(--subject-color);
+}
+.subject-color-h2 h2,
+.subject-color-h2 .cm-header-2 {
 	color: var(--subject-color);
 }
 
-.subject-color-h2 h2 {
+.subject-color-h3 h3,
+.subject-color-h3 .cm-header-3 {
 	color: var(--subject-color);
 }
 
-.subject-color-h3 h3 {
+.subject-color-h4 h4,
+.subject-color-h4 .cm-header-4 {
 	color: var(--subject-color);
 }
 
-.subject-color-h4 h4 {
+.subject-color-h5 h5,
+.subject-color-h5 .cm-header-5 {
 	color: var(--subject-color);
 }
 
-.subject-color-h5 h5 {
-	color: var(--subject-color);
-}
-
-.subject-color-h6 h6 {
+.subject-color-h6 h6,
+.subject-color-h6 .cm-header-6 {
 	color: var(--subject-color);
 }
 
@@ -39,59 +43,62 @@
  * Heading underlines
  * ----------------------------------------- */
 
-.subject-underline-h1 h1 {
-	text-decoration-line: underline;
-	text-decoration-color: var(--subject-color);
-	text-decoration-thickness: 0.08em;
-	text-underline-offset: 0.18em;
+.subject-underline-h1 h1,
+.subject-underline-h1 .cm-header-1 {
+  text-decoration-line: underline;
+  text-decoration-color: var(--subject-color);
+  text-decoration-thickness: 4px;
+  text-underline-offset: 6px;
 }
 
-.subject-underline-h2 h2 {
-	text-decoration-line: underline;
-	text-decoration-color: var(--subject-color);
-	text-decoration-thickness: 0.08em;
-	text-underline-offset: 0.18em;
+.subject-underline-h2 h2,
+.subject-underline-h2 .cm-header-2 {
+  text-decoration-line: underline;
+  text-decoration-color: var(--subject-color);
+  text-decoration-thickness: 3px;
+  text-underline-offset: 4px;
 }
 
-.subject-underline-h3 h3 {
-	text-decoration-line: underline;
-	text-decoration-color: var(--subject-color);
-	text-decoration-thickness: 0.08em;
-	text-underline-offset: 0.18em;
+.subject-underline-h3 h3,
+.subject-underline-h3 .cm-header-3 {
+  text-decoration-line: underline;
+  text-decoration-color: var(--subject-color);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 2px;
 }
 
-.subject-underline-h4 h4 {
-	text-decoration-line: underline;
-	text-decoration-color: var(--subject-color);
-	text-decoration-thickness: 0.08em;
-	text-underline-offset: 0.18em;
+.subject-underline-h4 h4,
+.subject-underline-h4 .cm-header-4 {
+  text-decoration-line: underline;
+  text-decoration-color: var(--subject-color);
+  text-decoration-thickness: 0.1em;
+  text-underline-offset: 0.2em;
 }
 
-.subject-underline-h5 h5 {
-	text-decoration-line: underline;
-	text-decoration-color: var(--subject-color);
-	text-decoration-thickness: 0.08em;
-	text-underline-offset: 0.18em;
+.subject-underline-h5 h5,
+.subject-underline-h5 .cm-header-5 {
+  text-decoration-line: underline;
+  text-decoration-color: var(--subject-color);
+  text-decoration-thickness: 0.1em;
+  text-underline-offset: 0.2em;
 }
 
-.subject-underline-h6 h6 {
-	text-decoration-line: underline;
-	text-decoration-color: var(--subject-color);
-	text-decoration-thickness: 0.08em;
-	text-underline-offset: 0.18em;
+.subject-underline-h6 h6,
+.subject-underline-h6 .cm-header-6 {
+  text-decoration-line: underline;
+  text-decoration-color: var(--subject-color);
+  text-decoration-thickness: 0.1em;
+  text-underline-offset: 0.2em;
 }
 
 /* -----------------------------------------
  * Horizontal dividers
  * ----------------------------------------- */
 
-.subject-themed-dividers hr {
-	border-color: transparent;
-	border-top-color: color-mix(
-		in oklch,
-		var(--subject-color) 40%,
-		transparent
-	);
+.subject-themed-dividers hr,
+.subject-themed-dividers .hr {
+  border-color: transparent;
+  border-top-color: color-mix(in oklch, var(--subject-color) 40%, transparent);
 }
 
 /* -----------------------------------------
@@ -99,73 +106,65 @@
  * ----------------------------------------- */
 
 .subject-themed-callouts
-.callout:is(
-	[data-callout="note"],
-	[data-callout="abstract"],
-	[data-callout="summary"],
-	[data-callout="tldr"],
-	[data-callout="info"],
-	[data-callout="todo"],
-	[data-callout="tip"],
-	[data-callout="hint"],
-	[data-callout="question"],
-	[data-callout="help"],
-	[data-callout="faq"],
-	[data-callout="example"],
-	[data-callout="quote"],
-	[data-callout="cite"]
-) {
-	border-color: color-mix(
-		in oklch,
-		var(--subject-color) 65%,
-		transparent
-	);
-
-	background-color: color-mix(
-		in oklch,
-		var(--subject-color) 12%,
-		transparent
-	);
+  .callout:is(
+    [data-callout="note"],
+    [data-callout="abstract"],
+    [data-callout="summary"],
+    [data-callout="tldr"],
+    [data-callout="info"],
+    [data-callout="todo"],
+    [data-callout="tip"],
+    [data-callout="hint"],
+    [data-callout="question"],
+    [data-callout="help"],
+    [data-callout="faq"],
+    [data-callout="example"],
+    [data-callout="quote"],
+    [data-callout="cite"]
+  ) {
+  border-color: color-mix(in oklch, var(--subject-color) 65%, transparent);
+  background-color: color-mix(in oklch, var(--subject-color) 12%, transparent);
 }
 
 .subject-themed-callouts
-.callout:is(
-	[data-callout="note"],
-	[data-callout="abstract"],
-	[data-callout="summary"],
-	[data-callout="tldr"],
-	[data-callout="info"],
-	[data-callout="todo"],
-	[data-callout="tip"],
-	[data-callout="hint"],
-	[data-callout="question"],
-	[data-callout="help"],
-	[data-callout="faq"],
-	[data-callout="example"],
-	[data-callout="quote"],
-	[data-callout="cite"]
-)
-.callout-title {
-	color: var(--subject-color);
+  .callout:is(
+    [data-callout="note"],
+    [data-callout="abstract"],
+    [data-callout="summary"],
+    [data-callout="tldr"],
+    [data-callout="info"],
+    [data-callout="todo"],
+    [data-callout="tip"],
+    [data-callout="hint"],
+    [data-callout="question"],
+    [data-callout="help"],
+    [data-callout="faq"],
+    [data-callout="example"],
+    [data-callout="quote"],
+    [data-callout="cite"]
+  )
+  .callout-title {
+  color: var(--subject-color);
 }
 
 .subject-themed-callouts
-.callout:is(
-	[data-callout="note"],
-	[data-callout="abstract"],
-	[data-callout="summary"],
-	[data-callout="tldr"],
-	[data-callout="info"],
-	[data-callout="todo"],
-	[data-callout="tip"],
-	[data-callout="hint"],
-	[data-callout="question"],
-	[data-callout="help"],
-	[data-callout="faq"],
-	[data-callout="example"],
-	[data-callout="quote"],
-	[data-callout="cite"]
-)
-.callout-icon {
-	color: var(--subject-color);
+  .callout:is(
+    [data-callout="note"],
+    [data-callout="abstract"],
+    [data-callout="summary"],
+    [data-callout="tldr"],
+    [data-callout="info"],
+    [data-callout="todo"],
+    [data-callout="tip"],
+    [data-callout="hint"],
+    [data-callout="question"],
+    [data-callout="help"],
+    [data-callout="faq"],
+    [data-callout="example"],
+    [data-callout="quote"],
+    [data-callout="cite"]
+  )
+  .callout-icon
+  .svg-icon {
+  color: var(--subject-color);
 }

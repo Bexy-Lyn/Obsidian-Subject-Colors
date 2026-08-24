@@ -1,52 +1,49 @@
 import { Notice, Plugin } from "obsidian";
 
 import {
-	DEFAULT_SETTINGS,
-	SubjectColorSettings,
-	SubjectColorSettingTab,
+  DEFAULT_SETTINGS,
+  SubjectColorSettings,
+  SubjectColorSettingTab,
 } from "./settings";
 import { processThemePlaceholders } from "./renderer";
+import { refreshMarkdownViewStyles } from "./viewStyling";
 
 /**
  * Plugin lifecycle and registration
  */
 export default class SubjectColorPlugin extends Plugin {
-	settings!: SubjectColorSettings;
+  settings!: SubjectColorSettings;
 
-	async onload() {
-		await this.loadSettings();
+  async onload() {
+    await this.loadSettings();
 
-		this.addSettingTab(
-			new SubjectColorSettingTab(this.app, this),
-		);
+    this.addSettingTab(new SubjectColorSettingTab(this.app, this));
 
-		this.registerMarkdownPostProcessor(
-			(element, context) => {
-				processThemePlaceholders(
-					this.app,
-					element,
-					context,
-					this.settings,
-				);
-			},
-		);
+    this.registerMarkdownPostProcessor((element, context) => {
+      processThemePlaceholders(this.app, element, context, this.settings);
+    });
 
-		new Notice("Subject Color loaded");
-	}
+    this.app.workspace.onLayoutReady(() => {
+      refreshMarkdownViewStyles(this.app, this.settings);
+    });
+    this.registerEvent(
+      this.app.workspace.on("active-leaf-change", () => {
+        refreshMarkdownViewStyles(this.app, this.settings);
+      }),
+    );
 
-	onunload() {
-		// Nothing to clean up yet.
-	}
+    new Notice("Subject Color loaded");
+  }
 
-	async loadSettings() {
-		this.settings = Object.assign(
-			{},
-			DEFAULT_SETTINGS,
-			await this.loadData(),
-		);
-	}
+  onunload() {
+    // Nothing to clean up yet.
+  }
 
-	async saveSettings() {
-		await this.saveData(this.settings);
-	}
+  async loadSettings() {
+    this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+  }
+
+  async saveSettings() {
+    await this.saveData(this.settings);
+  }
 }

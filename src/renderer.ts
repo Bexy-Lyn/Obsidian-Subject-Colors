@@ -1,7 +1,6 @@
 import { App, MarkdownPostProcessorContext, TFile } from "obsidian";
 
-import { adjustColorLightness, getThemeAccentColor } from "./colors";
-import { getDefiningTag } from "./tags";
+import { adjustColorLightness, getFileThemeColor } from "./colors";
 import type { HeadingLevel, SubjectColorSettings } from "./settings";
 
 /**
@@ -46,26 +45,6 @@ export function processThemePlaceholders(
 }
 
 /**
- * Returns the effective theme color for a file.
- *
- * If the file has a tag with an assigned color, that color wins.
- * Otherwise Obsidian's current accent color is used.
- */
-function getFileThemeColor(
-  app: App,
-  file: TFile,
-  tagColors: Record<string, string>,
-): string {
-  const definingTag = getDefiningTag(app, file, tagColors);
-
-  if (definingTag !== undefined && tagColors[definingTag] !== undefined) {
-    return tagColors[definingTag];
-  }
-
-  return getThemeAccentColor();
-}
-
-/**
  * Walks through rendered text nodes and replaces theme placeholders.
  *
  * <code> and <pre> elements are skipped.
@@ -81,7 +60,7 @@ function replaceThemePlaceholdersInText(
   let currentNode = walker.nextNode();
 
   while (currentNode) {
-    if (currentNode.instanceOf(Text) && shouldProcessTextNode(currentNode)) {
+    if (currentNode instanceof Text && shouldProcessTextNode(currentNode)) {
       textNodes.push(currentNode);
     }
 

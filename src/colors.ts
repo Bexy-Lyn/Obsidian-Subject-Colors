@@ -1,3 +1,6 @@
+import { App, TFile } from "obsidian";
+import { getDefiningTag } from "./tags";
+
 export interface RGBColor {
 	r: number;
 	g: number;
@@ -20,6 +23,33 @@ export function getThemeAccentColor(): string {
 	}
 
 	return cssColorToHex(accent) ?? "#7f6df2";
+}
+
+/**
+ * Returns the effective theme color for a Markdown file.
+ *
+ * The first tag with an assigned color wins.
+ * If no tag has a color, Obsidian's current accent color is used.
+ */
+export function getFileThemeColor(
+	app: App,
+	file: TFile,
+	tagColors: Record<string, string>,
+): string {
+	const definingTag = getDefiningTag(
+		app,
+		file,
+		tagColors,
+	);
+
+	if (
+		definingTag !== undefined &&
+		tagColors[definingTag] !== undefined
+	) {
+		return tagColors[definingTag];
+	}
+
+	return getThemeAccentColor();
 }
 
 /**
