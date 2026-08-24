@@ -1,9 +1,9 @@
 {
 	"id": "subject-color",
-	"name": "Subject Color",
+	"name": "Fancy Color Coding",
 	"version": "1.0.0",
 	"minAppVersion": "1.13.0",
-	"description": "Assign note colours from tags and use them through theme placeholders.",
+	"description": "Assign note colors from tags and use them through theme placeholders.",
 	"author": "Bexy_Lyn",
 	"isDesktopOnly": false
 }
