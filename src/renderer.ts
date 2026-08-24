@@ -2,6 +2,7 @@ import { App, MarkdownPostProcessorContext, TFile } from "obsidian";
 
 import { adjustColorLightness, getThemeAccentColor } from "./colors";
 import { getDefiningTag } from "./tags";
+import type { HeadingLevel, SubjectColorSettings } from "./settings";
 
 /**
  * Matches:
@@ -27,7 +28,7 @@ export function processThemePlaceholders(
   app: App,
   element: HTMLElement,
   context: MarkdownPostProcessorContext,
-  tagColors: Record<string, string>,
+  settings: SubjectColorSettings,
 ): void {
   const file = app.vault.getAbstractFileByPath(context.sourcePath);
 
@@ -35,11 +36,13 @@ export function processThemePlaceholders(
     return;
   }
 
-  const themeColor = getFileThemeColor(app, file, tagColors);
+  const themeColor = getFileThemeColor(app, file, settings.tagColors);
 
   replaceThemePlaceholdersInText(element, themeColor);
 
   replaceThemePlaceholdersInAttributes(element, themeColor);
+
+  applyThemeStyles(element, themeColor, settings);
 }
 
 /**
@@ -94,6 +97,67 @@ function replaceThemePlaceholdersInText(
 
     textNode.nodeValue = replaceThemePlaceholders(originalText, themeColor);
   }
+}
+
+/**
+ * Applies the note's theme color and styling configuration
+ * to a rendered Markdown section.
+ */
+function applyThemeStyles(
+	element: HTMLElement,
+	themeColor: string,
+	settings: SubjectColorSettings,
+): void {
+	element.style.setProperty(
+		"--subject-color",
+		themeColor,
+	);
+
+	applyHeadingClasses(
+		element,
+		settings.headingColorLevels,
+		settings.headingUnderlineLevels,
+	);
+
+	element.toggleClass(
+		"subject-themed-dividers",
+		settings.themeDividers,
+	);
+
+	element.toggleClass(
+		"subject-themed-callouts",
+		settings.themeStandardCallouts,
+	);
+}
+
+/**
+ * Adds classes for heading color and underline settings.
+ */
+function applyHeadingClasses(
+	element: HTMLElement,
+	colorLevels: HeadingLevel[],
+	underlineLevels: HeadingLevel[],
+): void {
+	const levels: HeadingLevel[] = [
+		1,
+		2,
+		3,
+		4,
+		5,
+		6,
+	];
+
+	for (const level of levels) {
+		element.toggleClass(
+			`subject-color-h${level}`,
+			colorLevels.includes(level),
+		);
+
+		element.toggleClass(
+			`subject-underline-h${level}`,
+			underlineLevels.includes(level),
+		);
+	}
 }
 
 /**

@@ -1,8 +1,171 @@
 /*
+ * Subject Color
+ *
+ * Note-specific colors are supplied by renderer.ts through:
+ *
+ *   --subject-color
+ */
 
-This CSS file will be included with your plugin, and
-available in the app when your plugin is enabled.
 
-If your plugin does not need CSS, delete this file.
+/* -----------------------------------------
+ * Heading colors
+ * ----------------------------------------- */
 
-*/
+.subject-color-h1 h1 {
+	color: var(--subject-color);
+}
+
+.subject-color-h2 h2 {
+	color: var(--subject-color);
+}
+
+.subject-color-h3 h3 {
+	color: var(--subject-color);
+}
+
+.subject-color-h4 h4 {
+	color: var(--subject-color);
+}
+
+.subject-color-h5 h5 {
+	color: var(--subject-color);
+}
+
+.subject-color-h6 h6 {
+	color: var(--subject-color);
+}
+
+/* -----------------------------------------
+ * Heading underlines
+ * ----------------------------------------- */
+
+.subject-underline-h1 h1 {
+	text-decoration-line: underline;
+	text-decoration-color: var(--subject-color);
+	text-decoration-thickness: 0.08em;
+	text-underline-offset: 0.18em;
+}
+
+.subject-underline-h2 h2 {
+	text-decoration-line: underline;
+	text-decoration-color: var(--subject-color);
+	text-decoration-thickness: 0.08em;
+	text-underline-offset: 0.18em;
+}
+
+.subject-underline-h3 h3 {
+	text-decoration-line: underline;
+	text-decoration-color: var(--subject-color);
+	text-decoration-thickness: 0.08em;
+	text-underline-offset: 0.18em;
+}
+
+.subject-underline-h4 h4 {
+	text-decoration-line: underline;
+	text-decoration-color: var(--subject-color);
+	text-decoration-thickness: 0.08em;
+	text-underline-offset: 0.18em;
+}
+
+.subject-underline-h5 h5 {
+	text-decoration-line: underline;
+	text-decoration-color: var(--subject-color);
+	text-decoration-thickness: 0.08em;
+	text-underline-offset: 0.18em;
+}
+
+.subject-underline-h6 h6 {
+	text-decoration-line: underline;
+	text-decoration-color: var(--subject-color);
+	text-decoration-thickness: 0.08em;
+	text-underline-offset: 0.18em;
+}
+
+/* -----------------------------------------
+ * Horizontal dividers
+ * ----------------------------------------- */
+
+.subject-themed-dividers hr {
+	border-color: transparent;
+	border-top-color: color-mix(
+		in oklch,
+		var(--subject-color) 40%,
+		transparent
+	);
+}
+
+/* -----------------------------------------
+ * Standard informational callouts
+ * ----------------------------------------- */
+
+.subject-themed-callouts
+.callout:is(
+	[data-callout="note"],
+	[data-callout="abstract"],
+	[data-callout="summary"],
+	[data-callout="tldr"],
+	[data-callout="info"],
+	[data-callout="todo"],
+	[data-callout="tip"],
+	[data-callout="hint"],
+	[data-callout="question"],
+	[data-callout="help"],
+	[data-callout="faq"],
+	[data-callout="example"],
+	[data-callout="quote"],
+	[data-callout="cite"]
+) {
+	border-color: color-mix(
+		in oklch,
+		var(--subject-color) 65%,
+		transparent
+	);
+
+	background-color: color-mix(
+		in oklch,
+		var(--subject-color) 12%,
+		transparent
+	);
+}
+
+.subject-themed-callouts
+.callout:is(
+	[data-callout="note"],
+	[data-callout="abstract"],
+	[data-callout="summary"],
+	[data-callout="tldr"],
+	[data-callout="info"],
+	[data-callout="todo"],
+	[data-callout="tip"],
+	[data-callout="hint"],
+	[data-callout="question"],
+	[data-callout="help"],
+	[data-callout="faq"],
+	[data-callout="example"],
+	[data-callout="quote"],
+	[data-callout="cite"]
+)
+.callout-title {
+	color: var(--subject-color);
+}
+
+.subject-themed-callouts
+.callout:is(
+	[data-callout="note"],
+	[data-callout="abstract"],
+	[data-callout="summary"],
+	[data-callout="tldr"],
+	[data-callout="info"],
+	[data-callout="todo"],
+	[data-callout="tip"],
+	[data-callout="hint"],
+	[data-callout="question"],
+	[data-callout="help"],
+	[data-callout="faq"],
+	[data-callout="example"],
+	[data-callout="quote"],
+	[data-callout="cite"]
+)
+.callout-icon {
+	color: var(--subject-color);
+}

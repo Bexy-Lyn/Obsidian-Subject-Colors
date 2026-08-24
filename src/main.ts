@@ -26,7 +26,7 @@ export default class SubjectColorPlugin extends Plugin {
 					this.app,
 					element,
 					context,
-					this.settings.tagColors,
+					this.settings,
 				);
 			},
 		);
