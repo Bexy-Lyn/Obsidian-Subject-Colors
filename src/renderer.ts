@@ -60,7 +60,7 @@ function replaceThemePlaceholdersInText(
   let currentNode = walker.nextNode();
 
   while (currentNode) {
-    if (currentNode instanceof Text && shouldProcessTextNode(currentNode)) {
+    if (currentNode.instanceOf(Text) && shouldProcessTextNode(currentNode)) {
       textNodes.push(currentNode);
     }
 
@@ -88,6 +88,28 @@ function applyThemeStyles(
   settings: SubjectColorSettings,
 ): void {
   element.style.setProperty("--subject-color", themeColor);
+
+  element.style.setProperty("--text-accent", themeColor);
+
+  element.style.setProperty(
+    "--text-accent-hover",
+    `color-mix(
+		in oklch,
+		${themeColor} 80%,
+		var(--text-normal)
+	)`,
+  );
+
+  element.style.setProperty("--interactive-accent", themeColor);
+
+  element.style.setProperty(
+    "--interactive-accent-hover",
+    `color-mix(
+		in oklch,
+		${themeColor} 80%,
+		var(--text-normal)
+	)`,
+  );
 
   applyHeadingClasses(
     element,

@@ -1,14 +1,8 @@
-import {
-	App,
-	MarkdownView,
-} from "obsidian";
+import { App, MarkdownView } from "obsidian";
 
 import { getFileThemeColor } from "./colors";
 
-import type {
-	HeadingLevel,
-	SubjectColorSettings,
-} from "./settings";
+import type { HeadingLevel, SubjectColorSettings } from "./settings";
 
 /**
  * Applies subject-color styling to all currently open Markdown views.
@@ -16,127 +10,105 @@ import type {
  * This is primarily used for Live Preview / editor styling.
  */
 export function refreshMarkdownViewStyles(
-	app: App,
-	settings: SubjectColorSettings,
+  app: App,
+  settings: SubjectColorSettings,
 ): void {
-	const leaves =
-		app.workspace.getLeavesOfType("markdown");
+  const leaves = app.workspace.getLeavesOfType("markdown");
 
-	for (const leaf of leaves) {
-		if (!(leaf.view instanceof MarkdownView)) {
-			continue;
-		}
+  for (const leaf of leaves) {
+    if (!(leaf.view instanceof MarkdownView)) {
+      continue;
+    }
 
-		applyMarkdownViewStyles(
-			app,
-			leaf.view,
-			settings,
-		);
-	}
+    applyMarkdownViewStyles(app, leaf.view, settings);
+  }
 }
 
 function applyMarkdownViewStyles(
-	app: App,
-	view: MarkdownView,
-	settings: SubjectColorSettings,
+  app: App,
+  view: MarkdownView,
+  settings: SubjectColorSettings,
 ): void {
-	const file = view.file;
+  const file = view.file;
 
-	if (!file) {
-		clearViewStyles(view);
-		return;
-	}
+  if (!file) {
+    clearViewStyles(view);
+    return;
+  }
 
-	const themeColor = getFileThemeColor(
-		app,
-		file,
-		settings.tagColors,
-	);
+  const themeColor = getFileThemeColor(app, file, settings.tagColors);
 
-	const container = view.containerEl;
+  const container = view.containerEl;
 
-	container.style.setProperty(
-		"--subject-color",
-		themeColor,
-	);
+  container.style.setProperty("--subject-color", themeColor);
 
-	applyHeadingClasses(
-		container,
-		settings.headingColorLevels,
-		settings.headingUnderlineLevels,
-	);
+  container.style.setProperty("--text-accent", themeColor);
 
-	container.toggleClass(
-		"subject-themed-dividers",
-		settings.themeDividers,
-	);
+  container.style.setProperty(
+    "--text-accent-hover",
+    `color-mix(
+		in oklch,
+		${themeColor} 80%,
+		var(--text-normal)
+	)`,
+  );
 
-	container.toggleClass(
-		"subject-themed-callouts",
-		settings.themeStandardCallouts,
-	);
+  container.style.setProperty("--interactive-accent", themeColor);
+
+  container.style.setProperty(
+    "--interactive-accent-hover",
+    `color-mix(
+		in oklch,
+		${themeColor} 80%,
+		var(--text-normal)
+	)`,
+  );
+
+  applyHeadingClasses(
+    container,
+    settings.headingColorLevels,
+    settings.headingUnderlineLevels,
+  );
+
+  container.toggleClass("subject-themed-dividers", settings.themeDividers);
+
+  container.toggleClass(
+    "subject-themed-callouts",
+    settings.themeStandardCallouts,
+  );
 }
 
 function applyHeadingClasses(
-	element: HTMLElement,
-	colorLevels: HeadingLevel[],
-	underlineLevels: HeadingLevel[],
+  element: HTMLElement,
+  colorLevels: HeadingLevel[],
+  underlineLevels: HeadingLevel[],
 ): void {
-	const levels: HeadingLevel[] = [
-		1,
-		2,
-		3,
-		4,
-		5,
-		6,
-	];
+  const levels: HeadingLevel[] = [1, 2, 3, 4, 5, 6];
 
-	for (const level of levels) {
-		element.toggleClass(
-			`subject-color-h${level}`,
-			colorLevels.includes(level),
-		);
+  for (const level of levels) {
+    element.toggleClass(`subject-color-h${level}`, colorLevels.includes(level));
 
-		element.toggleClass(
-			`subject-underline-h${level}`,
-			underlineLevels.includes(level),
-		);
-	}
+    element.toggleClass(
+      `subject-underline-h${level}`,
+      underlineLevels.includes(level),
+    );
+  }
 }
 
-function clearViewStyles(
-	view: MarkdownView,
-): void {
-	const container = view.containerEl;
+function clearViewStyles(view: MarkdownView): void {
+  const container = view.containerEl;
 
-	container.style.removeProperty(
-		"--subject-color",
-	);
+  container.style.removeProperty("--subject-color");
 
-	const levels: HeadingLevel[] = [
-		1,
-		2,
-		3,
-		4,
-		5,
-		6,
-	];
+  const levels: HeadingLevel[] = [1, 2, 3, 4, 5, 6];
 
-	for (const level of levels) {
-		container.removeClass(
-			`subject-color-h${level}`,
-		);
+  for (const level of levels) {
+    container.removeClass(`subject-color-h${level}`);
 
-		container.removeClass(
-			`subject-underline-h${level}`,
-		);
-	}
+    container.removeClass(`subject-underline-h${level}`);
+  }
 
-	container.removeClass(
-		"subject-themed-dividers",
-	);
+  container.removeClass("subject-themed-dividers");
 
-	container.removeClass(
-		"subject-themed-callouts",
-	);
+  container.removeClass("subject-themed-callouts");
 }
