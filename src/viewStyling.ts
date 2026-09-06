@@ -3,6 +3,7 @@ import { App, MarkdownView } from "obsidian";
 import { getFileThemeColor } from "./colors";
 
 import type { HeadingLevel, SubjectColorSettings } from "./settings";
+import { applyAccentVariables } from "./styleVariables";
 
 /**
  * Applies subject-color styling to all currently open Markdown views.
@@ -39,30 +40,7 @@ function applyMarkdownViewStyles(
   const themeColor = getFileThemeColor(app, file, settings.tagColors);
 
   const container = view.containerEl;
-
-  container.style.setProperty("--subject-color", themeColor);
-
-  container.style.setProperty("--text-accent", themeColor);
-
-  container.style.setProperty(
-    "--text-accent-hover",
-    `color-mix(
-		in oklch,
-		${themeColor} 80%,
-		var(--text-normal)
-	)`,
-  );
-
-  container.style.setProperty("--interactive-accent", themeColor);
-
-  container.style.setProperty(
-    "--interactive-accent-hover",
-    `color-mix(
-		in oklch,
-		${themeColor} 80%,
-		var(--text-normal)
-	)`,
-  );
+  applyAccentVariables(container, themeColor);
 
   applyHeadingClasses(
     container,

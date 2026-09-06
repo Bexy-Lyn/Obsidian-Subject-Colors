@@ -2,6 +2,7 @@ import { App, MarkdownPostProcessorContext, TFile } from "obsidian";
 
 import { adjustColorLightness, getFileThemeColor } from "./colors";
 import type { HeadingLevel, SubjectColorSettings } from "./settings";
+import { applyAccentVariables } from "./styleVariables";
 
 /**
  * Matches:
@@ -87,29 +88,7 @@ function applyThemeStyles(
   themeColor: string,
   settings: SubjectColorSettings,
 ): void {
-  element.style.setProperty("--subject-color", themeColor);
-
-  element.style.setProperty("--text-accent", themeColor);
-
-  element.style.setProperty(
-    "--text-accent-hover",
-    `color-mix(
-		in oklch,
-		${themeColor} 80%,
-		var(--text-normal)
-	)`,
-  );
-
-  element.style.setProperty("--interactive-accent", themeColor);
-
-  element.style.setProperty(
-    "--interactive-accent-hover",
-    `color-mix(
-		in oklch,
-		${themeColor} 80%,
-		var(--text-normal)
-	)`,
-  );
+  applyAccentVariables(element, themeColor);
 
   applyHeadingClasses(
     element,

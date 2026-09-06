@@ -16,27 +16,27 @@
 }
 .subject-color-h2 h2,
 .subject-color-h2 .cm-header-2 {
-	color: var(--subject-color);
+  color: var(--subject-color);
 }
 
 .subject-color-h3 h3,
 .subject-color-h3 .cm-header-3 {
-	color: var(--subject-color);
+  color: var(--subject-color);
 }
 
 .subject-color-h4 h4,
 .subject-color-h4 .cm-header-4 {
-	color: var(--subject-color);
+  color: var(--subject-color);
 }
 
 .subject-color-h5 h5,
 .subject-color-h5 .cm-header-5 {
-	color: var(--subject-color);
+  color: var(--subject-color);
 }
 
 .subject-color-h6 h6,
 .subject-color-h6 .cm-header-6 {
-	color: var(--subject-color);
+  color: var(--subject-color);
 }
 
 /* -----------------------------------------
