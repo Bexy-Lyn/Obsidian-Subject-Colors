@@ -168,3 +168,58 @@
   .svg-icon {
   color: var(--subject-color);
 }
+
+/* -----------------------------------------
+ * Individual tag colors
+ * ----------------------------------------- */
+
+a.tag.subject-tag-colored {
+  color: var(--subject-tag-color);
+
+  background-color: color-mix(
+    in oklch,
+    var(--subject-tag-color) 15%,
+    transparent
+  );
+}
+
+a.tag.subject-tag-colored:hover {
+  color: var(--subject-tag-color);
+
+  background-color: color-mix(
+    in oklch,
+    var(--subject-tag-color) 25%,
+    transparent
+  );
+}
+
+a.tag.subject-tag-neutral {
+  color: color-mix(in oklch, var(--text-normal) 25%, transparent);
+
+  background-color: color-mix(in oklch, var(--text-normal) 4%, transparent);
+}
+
+a.tag.subject-tag-neutral:hover {
+  color: color-mix(in oklch, var(--text-normal) 25%, transparent);
+
+  background-color: color-mix(in oklch, var(--text-normal) 8%, transparent);
+}
+
+/* -----------------------------------------
+ * Plugin Integration
+ * ----------------------------------------- */
+
+span.cm-glossary-link,
+a.cm-glossary-link,
+span.glossary-link,
+a.glossary-link {
+  color: color-mix(in oklch, var(--subject-color) 75%, transparent);
+  border-bottom-color: var(--subject-color) !important;
+}
+
+span.cm-glossary-link:hover,
+a.cm-glossary-link:hover,
+span.glossary-link:hover,
+a.glossary-link:hover {
+  color: var(--subject-color);
+}

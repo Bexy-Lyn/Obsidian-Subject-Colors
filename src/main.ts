@@ -5,7 +5,7 @@ import {
   SubjectColorSettings,
   SubjectColorSettingTab,
 } from "./settings";
-import { processThemePlaceholders } from "./renderer";
+import { processTheme } from "./renderer";
 import { refreshMarkdownViewStyles } from "./viewStyling";
 
 /**
@@ -20,7 +20,8 @@ export default class SubjectColorPlugin extends Plugin {
     this.addSettingTab(new SubjectColorSettingTab(this.app, this));
 
     this.registerMarkdownPostProcessor((element, context) => {
-      processThemePlaceholders(this.app, element, context, this.settings);
+      console.log(element);
+      processTheme(this.app, element, context, this.settings);
     });
 
     this.app.workspace.onLayoutReady(() => {
@@ -46,7 +47,7 @@ export default class SubjectColorPlugin extends Plugin {
   async saveSettings() {
     await this.saveData(this.settings);
 
-	await this.refreshViews();
+    await this.refreshViews();
   }
 
   async refreshViews(): Promise<void> {

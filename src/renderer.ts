@@ -24,7 +24,7 @@ const THEME_PATTERN = /\[theme(?:\/(\d+(?:\.\d+)?))?\]/g;
  *
  * Code and preformatted text are deliberately ignored.
  */
-export function processThemePlaceholders(
+export function processTheme(
   app: App,
   element: HTMLElement,
   context: MarkdownPostProcessorContext,
@@ -43,6 +43,8 @@ export function processThemePlaceholders(
   replaceThemePlaceholdersInAttributes(element, themeColor);
 
   applyThemeStyles(element, themeColor, settings);
+
+  styleRenderedTags(element, settings.tagColors);
 }
 
 /**
@@ -122,6 +124,45 @@ function applyHeadingClasses(
       underlineLevels.includes(level),
     );
   }
+}
+
+/**
+ * Gives every rendered tag its own configured color.
+ *
+ * Tags without an assigned color are rendered neutrally.
+ */
+function styleRenderedTags(
+  root: HTMLElement,
+  tagColors: Record<string, string>,
+): void {
+  const tags = root.querySelectorAll<HTMLElement>("a.tag, .cm-hashtag");
+
+  for (const tagElement of tags) {
+    const tag = normalizeRenderedTag(tagElement.textContent ?? "");
+
+    const assignedColor = tagColors[tag];
+
+    if (assignedColor !== undefined) {
+      tagElement.style.setProperty("--subject-tag-color", assignedColor);
+
+      tagElement.addClass("subject-tag-colored");
+
+      tagElement.removeClass("subject-tag-neutral");
+    } else {
+      tagElement.style.removeProperty("--subject-tag-color");
+
+      tagElement.addClass("subject-tag-neutral");
+
+      tagElement.removeClass("subject-tag-colored");
+    }
+    console.log(tag, tagElement);
+  }
+}
+
+function normalizeRenderedTag(tag: string): string {
+  const trimmed = tag.trim();
+
+  return trimmed.startsWith("#") ? trimmed : `#${trimmed}`;
 }
 
 /**
